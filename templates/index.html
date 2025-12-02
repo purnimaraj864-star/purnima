@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rooftop Rainwater Harvesting Calculator</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-tint"></i>
+                    <h1>RainHarvest Pro</h1>
+                </div>
+                <div class="language-selector">
+                    <select id="languageSelect">
+                        <option value="en">English</option>
+                        <option value="hi">हिंदी</option>
+                        <option value="te">తెలుగు</option>
+                        <option value="ta">தமிழ்</option>
+                    </select>
+                </div>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <h2 data-translate="hero.title">Smart Rainwater Harvesting Calculator</h2>
+                <p data-translate="hero.subtitle">Discover if your home is perfect for rainwater harvesting and get personalized recommendations</p>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <i class="fas fa-home"></i>
+                        <span data-translate="hero.stat1">10,000+ Homes Analyzed</span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-water"></i>
+                        <span data-translate="hero.stat2">Save 40% Water Bills</span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-leaf"></i>
+                        <span data-translate="hero.stat3">Eco-Friendly Solution</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Form -->
+        <section class="form-section">
+            <div class="form-container">
+                <h3 data-translate="form.title">Enter Your Property Details</h3>
+                <form id="harvestingForm">
+                    <div class="form-grid">
+                        <!-- Location -->
+                        <div class="form-group">
+                            <label for="location" data-translate="form.location">Location</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <input type="text" id="location" name="location" placeholder="Enter your city or address" required>
+                                <button type="button" id="getCurrentLocation" class="location-btn">
+                                    <i class="fas fa-crosshairs"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Roof Area -->
+                        <div class="form-group">
+                            <label for="roofArea" data-translate="form.roofArea">Roof Area (sq ft)</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-home"></i>
+                                <input type="number" id="roofArea" name="roofArea" placeholder="e.g., 1200" min="100" required>
+                            </div>
+                        </div>
+
+                        <!-- Number of People -->
+                        <div class="form-group">
+                            <label for="numPeople" data-translate="form.numPeople">Number of People</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-users"></i>
+                                <input type="number" id="numPeople" name="numPeople" placeholder="e.g., 4" min="1" required>
+                            </div>
+                        </div>
+
+                        <!-- Available Space -->
+                        <div class="form-group">
+                            <label for="availableSpace" data-translate="form.availableSpace">Available Open Space (sq ft)</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-expand-arrows-alt"></i>
+                                <input type="number" id="availableSpace" name="availableSpace" placeholder="e.g., 200" min="0" required>
+                            </div>
+                        </div>
+
+                        <!-- Roof Type -->
+                        <div class="form-group">
+                            <label for="roofType" data-translate="form.roofType">Roof Type</label>
+                            <select id="roofType" name="roofType" required>
+                                <option value="">Select roof type</option>
+                                <option value="concrete">Concrete/RCC</option>
+                                <option value="tile">Tile</option>
+                                <option value="metal">Metal Sheet</option>
+                                <option value="asbestos">Asbestos</option>
+                            </select>
+                        </div>
+
+                        <!-- Soil Type -->
+                        <div class="form-group">
+                            <label for="soilType" data-translate="form.soilType">Soil Type</label>
+                            <select id="soilType" name="soilType" required>
+                                <option value="">Select soil type</option>
+                                <option value="sandy">Sandy</option>
+                                <option value="clay">Clay</option>
+                                <option value="loamy">Loamy</option>
+                                <option value="rocky">Rocky</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-calculator"></i>
+                        <span data-translate="form.calculate">Calculate Rainwater Harvesting Potential</span>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Loading Section -->
+        <section id="loadingSection" class="loading-section" style="display: none;">
+            <div class="loading-content">
+                <div class="spinner"></div>
+                <h3 data-translate="loading.title">Analyzing Your Property...</h3>
+                <p data-translate="loading.subtitle">Fetching weather data, calculating potential, and generating recommendations</p>
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section id="resultsSection" class="results-section" style="display: none;">
+            <div class="results-container">
+                <h3 data-translate="results.title">Your Rainwater Harvesting Report</h3>
+                
+                <!-- Feasibility Card -->
+                <div class="result-card feasibility-card">
+                    <div class="card-header">
+                        <i class="fas fa-check-circle"></i>
+                        <h4 data-translate="results.feasibility">Feasibility Assessment</h4>
+                    </div>
+                    <div class="card-content">
+                        <div id="feasibilityResult" class="feasibility-result"></div>
+                    </div>
+                </div>
+
+                <!-- Water Collection Potential -->
+                <div class="result-card">
+                    <div class="card-header">
+                        <i class="fas fa-tint"></i>
+                        <h4 data-translate="results.potential">Water Collection Potential</h4>
+                    </div>
+                    <div class="card-content">
+                        <div class="metrics-grid">
+                            <div class="metric">
+                                <span class="metric-value" id="annualCollection">0</span>
+                                <span class="metric-label" data-translate="results.annualLiters">Liters/Year</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-value" id="monthlyCollection">0</span>
+                                <span class="metric-label" data-translate="results.monthlyLiters">Liters/Month</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-value" id="savings">₹0</span>
+                                <span class="metric-label" data-translate="results.annualSavings">Annual Savings</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recommended System -->
+                <div class="result-card">
+                    <div class="card-header">
+                        <i class="fas fa-cogs"></i>
+                        <h4 data-translate="results.system">Recommended System</h4>
+                    </div>
+                    <div class="card-content">
+                        <div id="systemRecommendation"></div>
+                    </div>
+                </div>
+
+                <!-- Cost Analysis -->
+                <div class="result-card">
+                    <div class="card-header">
+                        <i class="fas fa-rupee-sign"></i>
+                        <h4 data-translate="results.cost">Cost Analysis</h4>
+                    </div>
+                    <div class="card-content">
+                        <div class="cost-breakdown" id="costBreakdown"></div>
+                    </div>
+                </div>
+
+                <!-- Weather Data -->
+                <div class="result-card">
+                    <div class="card-header">
+                        <i class="fas fa-cloud-rain"></i>
+                        <h4 data-translate="results.weather">Local Weather Data</h4>
+                    </div>
+                    <div class="card-content">
+                        <div id="weatherData"></div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button id="downloadReport" class="action-btn primary">
+                        <i class="fas fa-download"></i>
+                        <span data-translate="results.download">Download Report</span>
+                    </button>
+                    <button id="shareReport" class="action-btn secondary">
+                        <i class="fas fa-share"></i>
+                        <span data-translate="results.share">Share Report</span>
+                    </button>
+                    <button id="newCalculation" class="action-btn">
+                        <i class="fas fa-redo"></i>
+                        <span data-translate="results.new">New Calculation</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4 data-translate="footer.about">About RainHarvest Pro</h4>
+                    <p data-translate="footer.description">Empowering communities to conserve groundwater through smart rainwater harvesting solutions.</p>
+                </div>
+                <div class="footer-section">
+                    <h4 data-translate="footer.resources">Resources</h4>
+                    <ul>
+                        <li><a href="#" data-translate="footer.guide">Installation Guide</a></li>
+                        <li><a href="#" data-translate="footer.maintenance">Maintenance Tips</a></li>
+                        <li><a href="#" data-translate="footer.faq">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 data-translate="footer.contact">Contact</h4>
+                    <p data-translate="footer.support">Support: help@rainharvest.pro</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='translations.js') }}"></script>
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+Frequently Asked Questions (FAQ)
+
+Q1: What is rooftop rainwater harvesting (RTRWH)?
+A1: It is a method of collecting rainwater from the roof surface and storing it or using it to recharge groundwater.
+
+Q2: Is this app free to use?
+A2: Yes, the web application is completely free and available to everyone.
+
+Q3: Do I need to be a technical expert to use the app?
+A3: No technical knowledge is needed. Simply fill in basic details like location, roof area, and available space.
+
+Q4: Can I use the app in my regional language?
+A4: Yes, the app supports multiple regional languages for better accessibility.
+
+Q5: How accurate are the suggestions?
+A5: The suggestions are based on official government data (CGWB) and standard hydrological calculations, giving good estimates.
+
+Q6: Can I trust the cost estimation provided by the app?
+A6: The cost estimation is based on average industry rates but may vary depending on local conditions. Always consult a professional before installation.
+
+Q7: Do I need to install anything to use this web application?
+A7: No installation is needed. The application works directly in any modern web browser.
+
+Q8: Can I save my feasibility report for future reference?
+A8: Yes, you can download or print the report after generation.
+
+Q9: Is the app suitable for both urban and rural areas?
+A9: Yes, it is designed for use in both rural and urban settings.
+
+Q10: Who should I contact if I face any issues?
+A10: Please contact our support team via the contact form on the website or the provided support email.
